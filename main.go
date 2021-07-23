@@ -15,7 +15,6 @@ func main() {
 
 	r := gin.Default()
 	//new template engine
-	//new template engine
 	r.HTMLRender = gintemplate.New(gintemplate.TemplateConfig{
 		Root:         "views",
 		Extension:    ".html",
@@ -23,6 +22,8 @@ func main() {
 		Partials:     []string{"partials/ad"},
 		DisableCache: true,
 	})
+
+	r.Static("/assets", "./public/assets")
 
 	r.GET("/", Controller.HomePage)
 	r.POST("/PostHomePage", Controller.PostHomePage)
