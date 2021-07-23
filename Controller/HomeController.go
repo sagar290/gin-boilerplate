@@ -1,6 +1,10 @@
 package Controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Formbody struct {
 	Name string `json:"name"`
@@ -8,8 +12,11 @@ type Formbody struct {
 }
 
 func HomePage(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "hello world",
+	c.HTML(http.StatusOK, "pages/home", gin.H{
+		"title": "Page file title!!",
+		"add": func(a int, b int) int {
+			return a + b
+		},
 	})
 }
 
