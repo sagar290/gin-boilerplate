@@ -1,4 +1,4 @@
-package model
+package Model
 
 import (
 	"database/sql"
@@ -7,10 +7,10 @@ import (
 
 type User struct {
 	ID           uint
-	Name         string
-	Email        *string
-	Age          uint8
-	Birthday     *time.Time
+	Name         string  `gorm:"size:255"`
+	Email        *string `gorm:"size:255"`
+	Age          int16   `gorm:"size:11"`
+	Birthday     time.Time
 	MemberNumber sql.NullString
 	ActivatedAt  sql.NullTime
 	CreatedAt    time.Time

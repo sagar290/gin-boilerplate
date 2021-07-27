@@ -1,18 +1,33 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	"time"
 
 	"gin-boilerplate/Controller"
+	"gin-boilerplate/Model"
 
-	"github.com/foolin/gin-template"
+	gintemplate "github.com/foolin/gin-template"
 	"github.com/gin-gonic/gin"
 )
 
+type User struct {
+	ID           uint
+	Name         string
+	Email        *string
+	Age          uint8
+	Birthday     *time.Time
+	MemberNumber sql.NullString
+	ActivatedAt  sql.NullTime
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+}
+
 func main() {
+	// Result := map[string]interface{}{}
 
-	fmt.Println("Hello world")
-
+	fmt.Println(Model.Host)
 	r := gin.Default()
 	//new template engine
 	r.HTMLRender = gintemplate.New(gintemplate.TemplateConfig{
