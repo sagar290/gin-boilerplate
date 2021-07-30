@@ -16,3 +16,7 @@ type User struct {
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
+
+func init() {
+	Db.AutoMigrate(User{})
+}

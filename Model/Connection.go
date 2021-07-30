@@ -6,6 +6,8 @@ import (
 
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 )
 
@@ -34,29 +36,38 @@ func init() {
 		panic(fmt.Errorf("Fatal error config file: %w \n", err))
 	}
 
-	// Connection := viper.GetString("DB_CONNECTION")
+	Connection := viper.GetString("DB_CONNECTION")
 	Host := viper.GetString("DB_HOST")
 	Port := viper.GetString("DB_PORT")
 	Database := viper.GetString("DB_DATABASE")
 	Username := viper.GetString("DB_USERNAME")
 	Password := viper.GetString("DB_PASSWORD")
 
-	fmt.Println(Host)
-	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
-	dsn := Username + ":" + Password + "@tcp(" + Host + ":" + Port + ")/" + Database + "?charset=utf8mb4&parseTime=True&loc=Local"
-	Db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic(err)
+	if Connection == "mysql" {
+		dsn := Username + ":" + Password + "@tcp(" + Host + ":" + Port + ")/" + Database + "?charset=utf8mb4&parseTime=True&loc=Local"
+		Db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+		if err != nil {
+			panic(err)
+		}
+		_ = Db
 	}
 
-	// defer Db.Close()
-	// // avoid declrare but not used
-	_ = Db
-	// _ = Result
-	Db.AutoMigrate(&User{})
-	// fmt.Println("Hello world")
-	var user User
-	Db.First(&User{})
-	fmt.Println(user.Name)
+	if Connection == "postgres" {
+		dsn := "host=" + Host + " user=" + Username + " password=" + Password + " dbname=" + Database + " port=" + Port + " sslmode=disable TimeZone=Asia/Dhaka"
+		Db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		if err != nil {
+			panic(err)
+		}
+		_ = Db
+	}
+
+	if Connection == "sqlite" {
+		dsn := "sqlserver://" + Username + ":" + Password + "@" + Host + ":" + Port + "?database=" + Database + ""
+		Db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
+		if err != nil {
+			panic(err)
+		}
+		_ = Db
+	}
 
 }

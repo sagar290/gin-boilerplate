@@ -1,6 +1,8 @@
 package Controller
 
 import (
+	"fmt"
+	models "gin-boilerplate/model"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,6 +14,14 @@ type Formbody struct {
 }
 
 func HomePage(c *gin.Context) {
+
+	// fetch database
+	var user models.User
+	db := models.Db
+	db.Model(&models.User{}).First(&user)
+
+	fmt.Println(user.Name)
+
 	c.HTML(http.StatusOK, "pages/home", gin.H{
 		"title": "Page file title!!",
 		"add": func(a int, b int) int {

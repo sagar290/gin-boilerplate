@@ -1,10 +1,16 @@
 package Model
 
 import (
-	"gorm.io/gorm"
+	"time"
 )
 
 type Product struct {
-	gorm.Model
-	Name string
+	ID        uint
+	Name      string `gorm:"size:255"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+func init() {
+	Db.AutoMigrate(Product{})
 }
